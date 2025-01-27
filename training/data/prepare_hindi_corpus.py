@@ -2,13 +2,13 @@ import os
 from tqdm import tqdm 
 import numpy as np 
 from transformers import AutoTokenizer
-from datasets import load_dataset 
+from datasets import load_dataset, load_from_disk
 
 
 
 # number of workers in .map() call 
 # good number to use is ~order number of cpu cores // 2
-num_proc = 8
+num_proc = 80
 
 # number of workers in load_dataset() call 
 # best number might be different from num_proc above as it also depends on NW speed. 
@@ -35,8 +35,9 @@ def process(example):
 
 
 if __name__ == '__main__':
-    
-    dataset = load_dataset(dataset_name, data_dir= 'verified/hin', num_proc = num_proc_load_dataset)
+    output_dir = "/root/data"
+    # cache_dir allows you to temporary cache your dataset.mapped data 
+    dataset = load_dataset(dataset_name, data_dir= 'verified/hin', num_proc = num_proc_load_dataset, cache_dir='/root/data/')
 
     split_dataset = dataset['train'].train_test_split(test_size = 0.05, seed=2357, shuffle=True)
     split_dataset['val'] = split_dataset.pop('test')        # rename the test split to val 
@@ -46,6 +47,7 @@ if __name__ == '__main__':
         remove_columns=['text'], 
         desc='tokenizing the split', 
         num_proc = num_proc, 
+        writer_batch_size=2000
     )
 
 
@@ -67,7 +69,7 @@ if __name__ == '__main__':
 
     for split, dset in tokenized_dataset.items(): 
         arr_len = np.sum(dset['len'], dtype=np.uint64)
-        filename = os.path.join(os.path.dirname(__file__), f'{split}.bin')
+        filename = os.path.join(output_dir, f'{split}.bin')
         dtype = np.uint16       # saving datatype and hence data 
         arr = np.memmap(filename, dtype=dtype, mode='w+', shape=(arr_len), )
         total_batches = 1024 

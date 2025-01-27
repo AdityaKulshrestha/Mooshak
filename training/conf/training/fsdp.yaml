@@ -1,0 +1,7 @@
+fsdp:
+  mixed_precision: false
+  flatten_parameters: true
+  reshard_after_forward: true
+  cpu_offload: false
+  limit_all_gathers: true
+  use_orig_params: true

@@ -1,0 +1,10 @@
+defaults:
+  - training: default
+  - model: llama
+  - optimizer: adamw
+  - data: default
+  - _self_
+
+hydra:
+  run:
+    dir: outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}

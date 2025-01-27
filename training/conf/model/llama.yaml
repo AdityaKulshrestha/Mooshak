@@ -1,0 +1,8 @@
+# @package _global_
+model:
+  _target_: model.Llama
+  vocab_size: 64128
+  block_size: 2048
+  n_layer: 24
+  n_head: 16
+  intermediate_dim: 8192

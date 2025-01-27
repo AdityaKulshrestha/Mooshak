@@ -1,0 +1,14 @@
+# @package _global_
+optimizer:
+  _target_: habana_frameworks.torch.hpex.optimizers.FusedAdamW
+  base_lr: 3e-5
+  beta1: 0.9
+  beta2: 0.95
+  weight_decay: 0.1
+  
+  scheduler:
+    _target_: torch.optim.lr_scheduler.CyclicLR
+    base_lr: ${optimizer.base_lr}
+    max_lr: 3e-4
+    step_size_up: 10000
+    mode: exp_range

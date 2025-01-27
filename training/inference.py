@@ -14,9 +14,6 @@ model = Llama(vocab_size=config['vocab_size'], seq_len = config['block_size'])
 model.load_state_dict(torch.load('ckpt_dir/model_30000_loss_2.949655.pth'))
 
 tokenizer = AutoTokenizer.from_pretrained('sarvamai/sarvam-2b-v0.5', trust_remote_code=True)
-# print(tokenizer.encode(tokenizer.bos_token))
-# print(tokenizer.eos_token)
-# print(tokenizer.vocab_size)
 
 
 texts = [

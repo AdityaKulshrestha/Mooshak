@@ -1,0 +1,27 @@
+# @package _global_
+training:
+  device: hpu
+  epochs: 10
+  batch_size: 8
+  distributed: true
+  num_devices: 2
+
+checkpoint:
+  dir: checkpoints
+  save_interval: 1000
+
+logging:
+  interval: 100
+
+validation:
+  interval: 500
+
+distributed:
+  backend: hccl
+  master_addr: localhost
+  master_port: 12355
+
+data:
+  train_path: data/train.bin
+  val_path: data/val.bin
+  num_workers: 8
